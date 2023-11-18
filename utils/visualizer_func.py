@@ -151,3 +151,18 @@ def plot_language_focus_bar(x, y, title='Title', x_name='X', y_name='Y'):
     
     fig = px.bar(df, x=x_name, y=y_name)
     st.plotly_chart(fig)
+    
+    
+def visualize_top_n_rows(df, selected_y_column, top_n):
+    # Convert 'created_at' to datetime format
+    df['created_at'] = pd.to_datetime(df['created_at'])
+
+    # Sort the DataFrame based on 'created_at'
+    df.sort_values(by='created_at', inplace=True)
+
+    # Display the bar plot with adjusted text size and orientation for the top n rows
+    top_n_df = df.nlargest(top_n, selected_y_column)
+    fig = px.bar(top_n_df, x='created_at', y=selected_y_column, labels={'created_at': 'Year of Creation', selected_y_column: 'Y-axis Column'}, text=top_n_df.index)
+    fig.update_traces(textposition='outside', textfont_size=12, textangle=-90)
+
+    st.plotly_chart(fig)

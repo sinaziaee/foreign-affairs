@@ -46,13 +46,13 @@ twi_df['followers_following_ratio'] = twi_df['followers_count'] / (twi_df['follo
 ####################################################################################
 
 # Convert 'created_at' to datetime format
-twi_df['created_at'] = pd.to_datetime(twi_df['created_at'])
+# twi_df['created_at'] = pd.to_datetime(twi_df['created_at'])
 
-# Sort the DataFrame based on 'created_at'
-twi_df.sort_values(by='created_at', inplace=True)
+# # Sort the DataFrame based on 'created_at'
+# twi_df.sort_values(by='created_at', inplace=True)
 
-# Streamlit app
-st.title('Twitter Data Visualization')
+# # Streamlit app
+# st.title('Twitter Data Visualization')
 
 # Allow user to select y-axis column
 selected_y_column = st.selectbox('Select a Column for Y-axis', ['followers_count', 'following_count', 'tweet_num', 'followers_following_ratio'])
@@ -60,9 +60,5 @@ selected_y_column = st.selectbox('Select a Column for Y-axis', ['followers_count
 # Allow user to choose the top n rows
 top_n = st.slider('Select Top N Rows', min_value=1, max_value=len(twi_df), value=100)
 
-# Display the bar plot with adjusted text size and orientation for the top n rows
-top_n_df = twi_df.nlargest(top_n, selected_y_column)
-fig = px.bar(top_n_df, x='created_at', y=selected_y_column, labels={'created_at': 'Year of Creation', selected_y_column: 'Y-axis Column'}, text=top_n_df.index)
-fig.update_traces(textposition='outside', textfont_size=12, textangle=-90)
-
-st.plotly_chart(fig)
+# Call the function to visualize the top n rows
+visualizer_func.visualize_top_n_rows(twi_df, selected_y_column, top_n)
