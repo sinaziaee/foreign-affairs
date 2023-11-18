@@ -92,7 +92,8 @@ def plot_follower_bar(x, y, title='Title', x_name='X', y_name='Y'):
 
 def plot_followers(df):
     column_options = ['X (Twitter) Follower #', 'Facebook Follower #', 'YouTube Subscriber #',
-                        'Instagram Follower #', 'Threads Follower #', 'TikTok Subscriber #']
+                        'Instagram Follower #', 'Threads Follower #', 'TikTok Subscriber #',
+                        'followers_count', 'following_count', 'tweet_num', 'followers_following_ratio']
     selected_columns = st.multiselect('Select Columns', column_options)
 
     # Update DataFrame column based on selected columns
