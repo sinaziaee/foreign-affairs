@@ -56,6 +56,25 @@ def visualize_dictionary_on_map(country_data):
 
     # Display the map in Streamlit
     folium_static(m)
+    
+def display_country_info(selected_country_name, country_info_dict):
+    # Function to display country information in a table
+    st.write("Selected Country Information:")
+    
+    if selected_country_name in country_info_dict:
+        country_info = country_info_dict[selected_country_name]
+        
+        # Ensure that all lists have the same length
+        min_length = min(map(len, country_info.values()))
+        country_info = {key: value[:min_length] for key, value in country_info.items()}
+        
+        # Create a DataFrame from the country_info dictionary
+        country_df = pd.DataFrame(country_info)
+        
+        # Display the scrollable table
+        st.dataframe(country_df.style.set_properties(**{'max-height': '400px', 'overflow-y': 'auto'}))
+    else:
+        st.write(f"No information available for {selected_country_name}")
 
 def visualize_graph(nodes, edges, node_colors):
     # Create a Network instance with directed graph
@@ -151,7 +170,6 @@ def plot_language_focus_bar(x, y, title='Title', x_name='X', y_name='Y'):
     
     fig = px.bar(df, x=x_name, y=y_name)
     st.plotly_chart(fig)
-    
     
 def visualize_top_n_rows(df, selected_y_column, top_n):
     # Convert 'created_at' to datetime format
