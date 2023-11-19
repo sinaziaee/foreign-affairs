@@ -184,3 +184,34 @@ def visualize_top_n_rows(df, selected_y_column, top_n):
     fig.update_traces(textposition='outside', textfont_size=12, textangle=-90)
 
     st.plotly_chart(fig)
+    
+    
+def create_pie_chart(data, column_value_name, column_title_name, title='Pie Chart'):
+    # Function to create a pie chart from data
+    st.write(title)
+    
+    # Create a DataFrame from the data
+    df = pd.DataFrame(data, columns=[column_title_name, column_value_name])
+    
+    # Plot a pie chart using plotly
+    fig = px.pie(df, names=column_title_name, values=column_value_name, title='Pie Chart')
+    
+    # Display the chart using st.plotly_chart
+    st.plotly_chart(fig)
+    
+def create_donut_chart(data, column_value_name, column_title_name, title='Donut Chart'):
+    st.set_option('deprecation.showPyplotGlobalUse', False)
+    # Function to create a donut chart from data
+    st.write(title)
+    
+    # Create a DataFrame from the data
+    df = pd.DataFrame(data, columns=[column_value_name, column_title_name])
+    
+    # Plot a donut chart
+    plt.figure(figsize=(8, 8))
+    plt.pie(df[column_value_name], labels=df[column_title_name], autopct='%1.1f%%', startangle=90,
+            wedgeprops=dict(width=0.3, edgecolor='w'))  # Set the width and edge color to create a donut
+    plt.axis('equal')  # Equal aspect ratio ensures that donut is drawn as a circle.
+    
+    # Display the chart using st.pyplot
+    st.pyplot()
