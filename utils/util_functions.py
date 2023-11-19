@@ -1,4 +1,5 @@
 import json 
+import pandas as pd
 
 def find_country_name_list(recognized_countries, country, my_dictionary):
     if country not in recognized_countries:
@@ -76,3 +77,63 @@ def create_name_owner_parent_graph(df):
         
     graph_dict = {"nodes": nodes, "edges": edges, 'node_colors': node_colors}
     save_country_focus_count_dict_file(graph_dict, "findings/account_owner_parent.json")
+
+def preprocess_twitter_data(twi_df):
+    twi_df = twi_df.sort_values('followers_count', ascending=False)
+    twi_df['X (Twitter) handle'] = list(twi_df.index)
+    if 'user_id' in list(twi_df.columns):
+        twi_df = twi_df.drop(columns=['user_id'], axis=1)
+    if 'description' in list(twi_df.columns):
+        twi_df = twi_df.drop(columns=['description'], axis=1)
+    twi_df['followers_following_ratio'] = twi_df['followers_count'] / (twi_df['following_count'] + 1e-8)
+    twi_df.head(2)
+    twi_df = twi_df.drop_duplicates()
+    twi_df['created_at'] = pd.to_datetime(twi_df['created_at'], format='%a %b %d %H:%M:%S +0000 %Y')
+    # Save the new column in the desired format
+    twi_df['formatted_created_at'] = twi_df['created_at'].dt.strftime('%Y-%m-%d')
+    
+    return twi_df
+
+def create_country_to_name_owner_parent_data(df):
+    country_to_accounts_dict = {}
+    for country_list, name, owner, parent in df[['focus group', 'Name (English)', 'Entity owner (English)', 'Parent entity (English)']].values:
+        for country in country_list:
+            if country not in list(country_to_accounts_dict.keys()):
+                country_to_accounts_dict[country] = {'name': [name], 'owner': [owner], 'parent': [parent]}
+            else:
+                temp_dic = country_to_accounts_dict[country]
+                if name not in list(temp_dic['name']):
+                    temp_dic['name'].append(name)
+                if owner not in list(temp_dic['owner']):
+                    temp_dic['owner'].append(owner)
+                if parent not in list(temp_dic['parent']): 
+                    temp_dic['parent'].append(parent)
+                country_to_accounts_dict[country] = temp_dic
+
+    with open('findings/country_corps.json', 'w') as file:
+        file.write(json.dumps(country_to_accounts_dict))
+        
+def get_processed_merged_data():
+    df_path = 'dataset/state_media_on_social_media_platforms.xlsx'
+    twitter_dir_path = 'dataset/twitter_accounts_info.csv'
+    twi_df = pd.read_csv(twitter_dir_path, index_col='username')
+    # loading the dataset
+    df = pd.read_excel(df_path, index_col='Name (English)')
+    df = data_preprocessor(df)
+    df['Name (English)'] = list(df.index)
+    # Load JSON data from file
+    with open('assets/recognized_countries.json', 'r') as file:
+        data = json.load(file)
+    recognized_countries = data
+
+    with open('assets/equivalent_countries.json', 'r') as file:
+        data = json.load(file)
+    equivalent_countries_dict = data
+
+    twi_df = preprocess_twitter_data(twi_df)
+    country_focus_count_dict, df = find_country_focus_count_dictionary(df, recognized_countries, equivalent_countries_dict)
+    country_to_accounts_dict = create_country_to_name_owner_parent_data(df)
+    # create name_owner_parent_graph_data
+    create_name_owner_parent_graph(df)
+    df = pd.merge(df, twi_df, on='X (Twitter) handle', how='outer')
+    return df, twi_df
