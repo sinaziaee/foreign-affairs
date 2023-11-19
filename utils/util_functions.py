@@ -35,3 +35,44 @@ def data_preprocessor(df):
     to_drop_columns = ['Name (Chinese)', 'Entity owner (Chinese)', 'Parent entity (Chinese)']
     df = df.drop(to_drop_columns, axis=1)
     return df 
+
+def create_name_owner_parent_graph(df):
+    column_list = ['Name (English)', 'Entity owner (English)', 'Parent entity (English)']
+
+    unique_parents = df['Parent entity (English)'].unique()
+    unique_owners = df['Entity owner (English)'].unique()
+    unique_names = df.index
+    df['Account Name'] = df.index
+
+    edges = []
+    nodes = []
+    node_colors = dict()
+
+    for owner in unique_owners:
+        # owner = 'China Media Group (CMG)'
+        if owner not in nodes:
+            nodes.append(owner)
+        to_node = owner
+        node_colors[to_node] = 'blue'
+        from_node = df[df['Entity owner (English)'] == owner]['Parent entity (English)'].unique()[0]
+        node_colors[from_node] = 'red'
+        if from_node not in nodes:
+            nodes.append(from_node)
+        # to nodes and from nodes are vise versa :)
+        edges.append((from_node, to_node))
+
+    for account in unique_names:
+        # owner = 'China Media Group (CMG)'
+        if account not in nodes:
+            nodes.append(account)
+        to_node = account
+        node_colors[to_node] = 'green'
+        from_node = df[df['Account Name'] == account]['Entity owner (English)'].unique()[0]
+        # node_colors[from_node] = 'blue'
+        if from_node not in nodes:
+            nodes.append(from_node)
+        # to nodes and from nodes are vise versa :)
+        edges.append((from_node, to_node))
+        
+    graph_dict = {"nodes": nodes, "edges": edges, 'node_colors': node_colors}
+    save_country_focus_count_dict_file(graph_dict, "findings/account_owner_parent.json")
