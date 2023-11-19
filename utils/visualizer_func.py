@@ -12,6 +12,8 @@ import pandas as pd
 import folium
 from streamlit_folium import folium_static
 import streamlit as st
+import plotly.graph_objects as go
+
 
 def visualize_dictionary_on_map(country_data):
     # Load the world shapefile using geopandas
@@ -26,8 +28,8 @@ def visualize_dictionary_on_map(country_data):
     world_data = world_shp.merge(df, left_on='name', right_on='Country', how='left')
 
     # Set up the Streamlit app
-    st.title("World Map Visualization")
-    st.write("Visualizing dictionary values on a world map")
+    # st.title("World Map Visualization")
+    st.write("Visualizing the number of social Media Platforms on each country")
 
     # Calculate the bounds based on the geometry of the mapped countries
     bounds = world_data.total_bounds.tolist()
@@ -164,11 +166,15 @@ def plot_filtered_language_follower_bar(df):
             title='Accounts Followers Based on Language', x_name='Accounts', y_name='Number of Followers')
     
 def plot_language_focus_bar(x, y, title='Title', x_name='X', y_name='Y'):
-    st.title(title)
+    # st.title(title)
     data = {x_name: x, y_name: y}
     df = pd.DataFrame(data)
     
+    st.text('\n \n')
+    st.text('\n \n')
+    
     fig = px.bar(df, x=x_name, y=y_name)
+    fig.update_layout(height=620)
     st.plotly_chart(fig)
     
 def visualize_top_n_rows(df, selected_y_column, top_n):
@@ -186,23 +192,26 @@ def visualize_top_n_rows(df, selected_y_column, top_n):
     st.plotly_chart(fig)
     
     
-def create_pie_chart(data, column_value_name, column_title_name, title='Pie Chart'):
+def create_pie_chart(data, column_value_name, column_title_name, title='Pie Chart', text=None):
     # Function to create a pie chart from data
     st.write(title)
-    
+    if text is not None:
+        st.text(text)
     # Create a DataFrame from the data
     df = pd.DataFrame(data, columns=[column_title_name, column_value_name])
     
     # Plot a pie chart using plotly
-    fig = px.pie(df, names=column_title_name, values=column_value_name, title='Pie Chart')
+    fig = px.pie(df, names=column_title_name, values=column_value_name, title='')
     
     # Display the chart using st.plotly_chart
     st.plotly_chart(fig)
     
-def create_donut_chart(data, column_value_name, column_title_name, title='Donut Chart'):
+def create_donut_chart(data, column_value_name, column_title_name, title='Donut Chart', text=None):
     st.set_option('deprecation.showPyplotGlobalUse', False)
     # Function to create a donut chart from data
     st.write(title)
+    if text is not None:
+        st.text(text)
     
     # Create a DataFrame from the data
     df = pd.DataFrame(data, columns=[column_value_name, column_title_name])
@@ -215,3 +224,69 @@ def create_donut_chart(data, column_value_name, column_title_name, title='Donut 
     
     # Display the chart using st.pyplot
     st.pyplot()
+
+def plot_metric(
+    label,
+    value,
+    prefix="",
+    suffix="",
+):
+    fig = go.Figure()
+    
+    fig.add_trace(
+        go.Indicator(
+            value=value,
+            gauge={"axis":{"visible":False}},
+            number={
+                "prefix": prefix,
+                "suffix": suffix,
+                "font.size": 28,
+            },
+            title={
+                "text": label,
+                "font": {"size": 24},
+            }
+        )
+    )
+    chart_height=100
+    fig.update_layout()
+    st.plotly_chart(fig, use_container_width=True, use_container_height = True)
+    
+def plot_gauge(
+    indicator_number,
+    indicator_color,
+    indicator_suffix,
+    indicator_title,
+    max_bound,
+    value = 2000,
+):
+    max_bound = 80
+    fig = go.Figure(
+        go.Indicator(
+            value=indicator_number,
+            mode="gauge+number",
+            domain={"x":[0, 1], 
+                    "y":[0,1]
+            },
+            number={"suffix": indicator_suffix,
+                    "font.size": 26
+            },
+            gauge={"axis":{"range":[0, max_bound], "tickwidth": 1},
+                    "bar": {"color": indicator_color},
+            },
+            title={"text": indicator_title,
+                    "font": {"size": 22},
+            },
+        )
+    )
+    
+    fig.add_annotation(
+        x=0.5,
+        y=0.2,
+        text=f'{value} Followers',
+        showarrow=False,
+        font=dict(size=20),
+    )
+    
+    fig.update_layout()
+    st.plotly_chart(fig, use_container_width=True)

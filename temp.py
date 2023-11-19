@@ -9,30 +9,30 @@ import pandas as pd
 
 with open('assets/country_focus_count.json', 'r') as file:
     temp_dic = json.load(file)
+
+visualizer_func.visualize_dictionary_on_map(temp_dic)
     
 with open('findings/country_corps.json', 'r') as file:
     country_info_dict = json.load(file)
 
-# visualizer_func.visualize_dictionary_on_map(temp_dic)
-
 selected_country_name = st.selectbox('Select a Country', list(country_info_dict.keys()))
 
 # Display country information in a table based on the selected country
-# visualizer_func.display_country_info(selected_country_name, country_info_dict)
+visualizer_func.display_country_info(selected_country_name, country_info_dict)
 
 df_path = 'dataset/state_media_on_social_media_platforms.xlsx'
 # loading the dataset
 df = pd.read_excel(df_path, index_col='Name (English)')
 
 language_usage_series = df['Language'].value_counts()
-# visualizer_func.plot_language_focus_bar(language_usage_series.index, language_usage_series.values, 
-                    # title='Language Focus', x_name='Languages', y_name='Number of Accounts')
+visualizer_func.plot_language_focus_bar(language_usage_series.index, language_usage_series.values, 
+                    title='Language Focus', x_name='Languages', y_name='Number of Accounts')
 
 
-# visualizer_func.plot_filtered_language_follower_bar(df)
+visualizer_func.plot_filtered_language_follower_bar(df)
 
 
-# visualizer_func.plot_followers(df)
+visualizer_func.plot_followers(df)
 
 with open('findings/account_owner_parent.json', 'r') as file:
     temp_dic = json.load(file)
@@ -58,7 +58,7 @@ selected_y_column = st.selectbox('Select a Column for Y-axis', ['followers_count
 # Allow user to choose the top n rows
 top_n = st.slider('Select Top N Rows', min_value=1, max_value=len(twi_df), value=100)
 # Call the function to visualize the top n rows
-# visualizer_func.visualize_top_n_rows(twi_df, selected_y_column, top_n)
+visualizer_func.visualize_top_n_rows(twi_df, selected_y_column, top_n)
 
 import matplotlib.pyplot as plt
 from matplotlib.animation import FuncAnimation
@@ -71,5 +71,13 @@ temp_df = pd.DataFrame({'Name': ["Is Verified", "Is Not Verified", "N/A"], 'Valu
 # Convert the DataFrame to a list of dictionaries for animation frames
 # Store the animation in a variable
 
-visualizer_func.create_pie_chart(temp_df, 'Value', 'Name')
-visualizer_func.create_donut_chart(temp_df, 'Value', 'Name', "Blue Verified Chart")
+visualizer_func.create_pie_chart(temp_df, 'Value', 'Name', "Verified Accounts")
+
+
+temp_series = df['type'].value_counts(dropna=False)
+temp_df = pd.DataFrame({'Name': list(temp_series.index), 'Value': list(temp_series.values)})
+# find total and nan values
+temp_series, text = util_functions.find_account_category(temp_df, df)
+temp_df = pd.DataFrame({'Name': list(temp_series.index), 'Value': list(temp_series.values)})
+st.text(text)
+visualizer_func.create_pie_chart(temp_df, 'Value', 'Name', "Type of Business accounts")

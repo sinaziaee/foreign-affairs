@@ -116,6 +116,7 @@ def create_country_to_name_owner_parent_data(df):
 def get_processed_merged_data():
     df_path = 'dataset/state_media_on_social_media_platforms.xlsx'
     twitter_dir_path = 'dataset/twitter_accounts_info.csv'
+    type_df_path = 'dataset/account types (twitter).csv'
     twi_df = pd.read_csv(twitter_dir_path, index_col='username')
     # loading the dataset
     df = pd.read_excel(df_path, index_col='Name (English)')
@@ -136,4 +137,53 @@ def get_processed_merged_data():
     # create name_owner_parent_graph_data
     create_name_owner_parent_graph(df)
     df = pd.merge(df, twi_df, on='X (Twitter) handle', how='outer')
+    type_df = pd.read_csv(type_df_path)
+    df = pd.merge(df, type_df, on='X (Twitter) handle', how='outer')
     return df, twi_df
+
+def find_account_category(temp_df, df):
+    nan_rows = temp_df[temp_df['Name'].isna()]
+    null_count = nan_rows['Value'].values[0]
+    total_count = len(df)
+    temp_series = df['type'].value_counts()
+    text = f'{100*(null_count/total_count):.2f}% of account are not Business accounts, among the business accounts these are the categories of each account'
+    return temp_series, text
+
+def save_file(path, data):
+    with open(path, 'w') as file:
+        json.dump(data, file)
+        
+def load_file(path):
+    with open(path, 'r') as file:
+        data = json.load(file)
+    return data
+
+def generate_corps_data(df):
+    len(df['Name (English)'].unique())
+    len(df['Entity owner (English)'].unique())
+    len(df['Parent entity (English)'].unique())
+    corp_dict = {"name": len(df['Name (English)'].unique()),
+                "owner": len(df['Entity owner (English)'].unique()),
+                "parent": len(df['Parent entity (English)'].unique()),
+                "twitter": len(df['X (Twitter) handle'].unique()),
+                "twitter_fol": int(df['followers_count'].sum()),
+                "tiktok": len(df['TikTok account'].unique()),
+                "tiktok_fol": int(df['TikTok Subscriber #'].sum()),
+                "instagram": len(df['Instragram page'].unique()),
+                "instagram_fol": int(df['Instagram Follower #'].sum()),
+                "youtube": len(df['YouTube account'].unique()),
+                "youtube_fol": int(df['YouTube Subscriber #'].sum()),
+                "facebook": len(df['Facebook page'].unique()),
+                "facebook_fol": int(df['Facebook Follower #'].sum()),
+                "total": len(df)
+                }
+    save_file('findings/corp_data.json', corp_dict)
+    
+def generate_visual_numbers(num):
+    if int(num /1000000000) > 0:
+        bil = num /1000000000
+        return f'{bil:.2f} B'
+    else:
+        mil = num/1000000
+        return f'{mil:.2f} M'
+
