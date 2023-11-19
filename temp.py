@@ -9,7 +9,15 @@ import pandas as pd
 with open('assets/country_focus_count.json', 'r') as file:
     temp_dic = json.load(file)
     
-# visualizer_func.visualize_dictionary_on_map(temp_dic)
+with open('findings/country_corps.json', 'r') as file:
+    country_info_dict = json.load(file)
+
+visualizer_func.visualize_dictionary_on_map(temp_dic)
+
+selected_country_name = st.selectbox('Select a Country', list(country_info_dict.keys()))
+
+# Display country information in a table based on the selected country
+visualizer_func.display_country_info(selected_country_name, country_info_dict)
 
 df_path = 'dataset/state_media_on_social_media_platforms.xlsx'
 # loading the dataset

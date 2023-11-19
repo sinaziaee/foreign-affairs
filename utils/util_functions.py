@@ -25,7 +25,7 @@ def find_country_focus_count_dictionary(df, recognized_countries, equivalent_cou
         country_list = df['focus group'][idx]
         for country in country_list:
             temp_dic[country] += 1
-    return temp_dic
+    return temp_dic, df
 
 def save_country_focus_count_dict_file(temp_dic, file_path):
     with open(file_path, 'w') as json_file:
