@@ -72,4 +72,4 @@ temp_df = pd.DataFrame({'Name': ["Is Verified", "Is Not Verified", "N/A"], 'Valu
 # Store the animation in a variable
 
 visualizer_func.create_pie_chart(temp_df, 'Value', 'Name')
-visualizer_func.create_donut_chart(temp_df, 'Value', 'Name')
+visualizer_func.create_donut_chart(temp_df, 'Value', 'Name', "Blue Verified Chart")
