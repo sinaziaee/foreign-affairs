@@ -61,6 +61,7 @@ with left:
     # Create a stacked bar chart
     fig = go.Figure()
 
+
     for platform in ['twitter', 'facebook', 'instagram', 'youtube', 'tiktok', 'threads']:
         fig.add_trace(go.Bar(
             x=[selected_country],

@@ -158,7 +158,7 @@ def plot_language_focus_bar(x, y, title='Title', x_name='X', y_name='Y'):
     st.text('\n \n')
     st.text('\n \n')
     
-    fig = px.bar(df, x=x_name, y=y_name)
+    fig = px.bar(df, x=x_name, y=y_name, color_discrete_sequence=['#04c0b1'])
     fig.update_layout(height=620)
     st.plotly_chart(fig, use_container_width=True)
     
@@ -171,7 +171,7 @@ def visualize_top_n_rows(df, selected_y_column, top_n):
 
     # Display the bar plot with adjusted text size and orientation for the top n rows
     top_n_df = df.nlargest(top_n, selected_y_column)
-    fig = px.bar(top_n_df, x='created_at', y=selected_y_column, labels={'created_at': 'Year of Creation', selected_y_column: 'Y-axis Column'}, text=top_n_df.index)
+    fig = px.bar(top_n_df, x='created_at', y=selected_y_column, labels={'created_at': 'Year of Creation', selected_y_column: 'Y-axis Column'}, text=top_n_df.index, color_discrete_sequence=['#04c0b1'])
     fig.update_traces(textposition='outside', textfont_size=12, textangle=-90)
 
     st.plotly_chart(fig, use_container_width=True, height=800)
