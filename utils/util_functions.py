@@ -179,6 +179,8 @@ def generate_corps_data(df):
                 "youtube_fol": int(df['YouTube Subscriber #'].sum()),
                 "facebook": len(df['Facebook page'].unique()),
                 "facebook_fol": int(df['Facebook Follower #'].sum()),
+                "threads": len(df['Threads account'].unique()),
+                "threads_fol": int(df['Threads Follower #'].sum()),
                 "total": len(df)
                 }
     save_file('findings/corp_data.json', corp_dict)

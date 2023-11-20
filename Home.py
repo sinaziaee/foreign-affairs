@@ -38,7 +38,7 @@ st.subheader("1. Data Preprocessing:")
 st.write("""
 Before visualizing the "Foreign Affairs" dataset, our initial step was to preprocess and refine the data to enhance data quality. First, We dropped the "Name (Chinese)" and "Entity owner (Chinese)" columns, as redundant information, since we have corresponding English names and Entity owners. Additionally, due to the varied nature of the "Region of Focus" column, containing cities, countries, and continents, we assigned each region to its corresponding countries in order to facilitate representing the data on the world map.
          
-         \n Furthermore, to have up-to-date information about the number of followers of each name on the dataset and have more accurate data, we leveraged social media APIs to extract the most recent follower counts. As a result, the number of followers has been updated to reflect the most recent data. The data was collected on November 16, 2023.
+         \n Furthermore, to have up-to-date information about the number of followers of each name on the dataset and have more accurate data, we leveraged social media APIs to extract the most recent follower counts in platforms that widely used by the names in the dataset. As a result, the number of followers has been updated to reflect the most recent data. The data was collected on November 18, 2023.
 
 """)
 
@@ -61,28 +61,42 @@ st.write("""All the source codes can be found on [GitHub](https://github.com/sin
 
 
 st.subheader("Repository")
-sample_list = {'assets': 'It contains json files to assign each region to its equivalent countries to represent the data based on various metrics on the world map',
-               'dataset': 'All datasets including the main dataset and new datasets are in this directory',
-               'findings':'Statistics (e.g., name, entity owners, accounts, etc.) obtained from the datasets',
-               'pages':'Implementaion of the charts and graphs in the projects',
-               'data_extraction.ipynb':'Codes to extract additional information about users via social media APIs',
-               'home.py':'',
-               'preprocess.ipynb':'',
-               'graph.html':'',}
-st.write("Sample List:")
-st.write(sample_list)
+repository_list = {'assets': 'It contains json files to assign each region to its equivalent countries to represent the data based on various metrics on the world map.',
+               'dataset': 'All datasets including the main dataset and new datasets are in this directory.',
+               'findings':'Statistics (e.g., name, entity owners, accounts, etc.) obtained from the datasets.',
+               'pages':'Implementaion of the charts and graphs in the projects.',
+               'data_extraction.ipynb':'Codes to extract additional information about users via social media APIs.',
+               'introduction.py':'Description of the proejct (First page).',
+               'preprocess.ipynb':'Codes to preprocess the raw data.'}
+st.write("Description of the repository content:")
+st.write(repository_list)
 
 st.subheader("Setup")
 
 st.write("""
+         
+Below are the steps to set up the Streamlit application using code from the GitHub repository: 
+
+         
+**Clone the Repository:**
+         
 ```
-pip install streamlit
+git clone https://github.com/sinaziaee/foreign-affairs
+
+```
+         
+
+**Install Dependencies:**
+         
+```
+pip install -r requirements.txt
+
 ```
 
-Once installed, you can run this app locally by executing the following command in your terminal:
+
+**Once installed the dependencies, run the app locally by executing the following command in your terminal:**
 ```
-streamlit run app.py
+streamlit run introduction.py
 ```
 
-Replace `app.py` with the name of your Python script.
 """)
