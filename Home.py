@@ -1,14 +1,11 @@
 import streamlit as st
-# from PIL import Image
 
 
 st.set_page_config(page_title="Introduction", page_icon=":bar_chart:", layout="wide")
 
 st.title("Hackathon - Data Visualization")
 
-# st.header("Logo Example")
-# logo_image = Image.open('uni_logo.png')
-# st.image(logo_image , caption="Your Logo Caption", use_column_width=True)
+
 
 # Introduction Section
 st.header("Introduction")
@@ -66,7 +63,7 @@ repository_list = {'assets': 'It contains json files to assign each region to it
                'findings':'Statistics (e.g., name, entity owners, accounts, etc.) obtained from the datasets.',
                'pages':'Implementaion of the charts and graphs in the projects.',
                'data_extraction.ipynb':'Codes to extract additional information about users via social media APIs.',
-               'introduction.py':'Description of the proejct (First page).',
+               'Home.py':'Description of the project (First page).',
                'preprocess.ipynb':'Codes to preprocess the raw data.'}
 st.write("Description of the repository content:")
 st.write(repository_list)
