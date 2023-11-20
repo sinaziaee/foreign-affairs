@@ -63,7 +63,7 @@ repository_list = {'assets': 'It contains json files to assign each region to it
                'findings':'Statistics (e.g., name, entity owners, accounts, etc.) obtained from the datasets.',
                'pages':'Implementaion of the charts and graphs in the projects.',
                'data_extraction.ipynb':'Codes to extract additional information about users via social media APIs.',
-               'introduction.py':'Description of the proejct (First page).',
+               'Home.py':'Description of the project (First page).',
                'preprocess.ipynb':'Codes to preprocess the raw data.'}
 st.write("Description of the repository content:")
 st.write(repository_list)
