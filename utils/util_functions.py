@@ -150,7 +150,7 @@ def find_account_category(temp_df, df):
     null_count = nan_rows['Value'].values[0]
     total_count = len(df)
     temp_series = df['type'].value_counts()
-    text = f'{100*(null_count/total_count):.2f}% of account are not Business accounts, among the business accounts these are the categories of each account'
+    text = f'{100*(null_count/total_count):.2f}% of account are not Business accounts, the categories of business accounts:'
     return temp_series, text
 
 def save_file(path, data):

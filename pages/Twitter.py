@@ -35,12 +35,12 @@ import streamlit as st
 import plotly.express as px
 import pandas as pd
 
-st.title("Twitter Accounts with Location in China")
+st.title("Twitter Accounts with Locations in China")
 
 data = {
     'Data': [''],
-    'All names with twitter accounts': [574],
-    'Twitter accounts with location': [337],
+    'Twitter accounts without location': [63],
+    'Twitter accounts outside of China': [337],
     'Users from China': [174]
 }
 
@@ -48,8 +48,8 @@ df = pd.DataFrame(data)
 df.set_index('Data', inplace=True)
 df = df[df.columns[::-1]]
 custom_colors = {
-    'All names with twitter accounts': '#088fbc',
-    'Twitter accounts with location': '#04c0b1',
+    'Twitter accounts without location': '#088fbc',
+    'Twitter accounts outside of China': '#04c0b1',
     'Users from China': '#e87551'
 }
 fig = px.bar(df, 
@@ -82,7 +82,7 @@ import numpy as np
 import matplotlib.pyplot as plt
     
 
-st.header("Number of Twitter Accounts Created over the years")    
+st.header("Number of Twitter Accounts Created over the")    
 
 temp_series = df.sort_values('created_at')['created_at'].unique()
 num_year_dict = {}

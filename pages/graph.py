@@ -11,7 +11,7 @@ df, twi_df = util_functions.get_processed_merged_data()
 import streamlit as st
 
 # Define options
-options = ['Name (English)', 'Entity owner (English)', 'Parent entity (English)', 'Focus countries']
+options = ['Name (English)', 'Entity owner (English)', 'Parent entity (English)', 'focus countries']
 
 # Let the user select exactly two options using checkboxes
 selected_options = st.multiselect('Select Options', options)

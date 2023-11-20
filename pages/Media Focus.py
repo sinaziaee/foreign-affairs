@@ -124,7 +124,7 @@ with bot_left:
     st.plotly_chart(fig, use_container_width=True)
 
 with bot_right:
-    st.header("Number of Followers")
+    st.header("Ratio of Followers")
     # Create a stacked bar chart
     fig = go.Figure()
 
