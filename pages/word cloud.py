@@ -3,6 +3,10 @@ from wordcloud import WordCloud
 import matplotlib.pyplot as plt
 import pandas as pd
 
+
+st.set_page_config(page_title="Word Cloud", page_icon=":bar_chart:", layout="wide")
+
+
 df = pd.read_excel('./dataset/state_media_on_social_media_platforms.xlsx')
 text = ''
 for i in df['Name (English)'].values:

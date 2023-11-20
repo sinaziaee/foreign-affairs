@@ -1,14 +1,11 @@
 import streamlit as st
-# from PIL import Image
 
 
 st.set_page_config(page_title="Introduction", page_icon=":bar_chart:", layout="wide")
 
 st.title("Hackathon - Data Visualization")
 
-# st.header("Logo Example")
-# logo_image = Image.open('uni_logo.png')
-# st.image(logo_image , caption="Your Logo Caption", use_column_width=True)
+
 
 # Introduction Section
 st.header("Introduction")
