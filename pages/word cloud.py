@@ -16,6 +16,6 @@ def generate_wordcloud(text):
     plt.axis('off')
     st.pyplot(plt)
 
-st.title("Word Cloud")
+st.title("Names Word Cloud")
 
 generate_wordcloud(text)
