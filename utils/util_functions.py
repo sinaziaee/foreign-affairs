@@ -217,8 +217,15 @@ def find_priority(selected_options, my_dict):
     
 
 def generate_graph(selected_options, df):
+    
     with open('findings/country_corps.json', 'r') as file:
         country_info_dict = json.load(file)
+    color_code = {
+        'Name (English)': '#04c0b1',
+        'Entity owner (English)': '#274d4a',
+        'Parent entity (English)': '#088fbc',
+        'focus countries': '#e87551'
+    }
     temp_my_dict = {
         'Name (English)': 'name',
         'Entity owner (English)': 'owner',
@@ -231,6 +238,8 @@ def generate_graph(selected_options, df):
     node_colors = {}
     if 'focus countries' not in selected_options:
         to_node_name, from_node_name = find_priority(selected_options, temp_my_dict)
+        color_1 = color_code[to_node_name]
+        color_2 = color_code[from_node_name]
         temp_df = df[['Name (English)', 'Entity owner (English)', 'Parent entity (English)']]
         to_nodes_list = list(df[to_node_name].values)
         for to_node in to_nodes_list:
@@ -238,29 +247,97 @@ def generate_graph(selected_options, df):
             for from_node in from_node_list:    
                 if to_node not in nodes:
                     nodes.append(to_node)
-                    node_colors[to_node] = 'red'
+                    node_colors[to_node] = color_1
                 if from_node not in nodes:
                     nodes.append(from_node)
-                    node_colors[from_node] = 'blue'
+                    node_colors[from_node] = color_2
                 edge = [from_node, to_node]
                 if edge not in edges:
                     edges.append(edge)
 
     else:
         opt1, opt2 = check_selected(selected_options, temp_my_dict)
+        color_1 = color_code[opt1]
+        color_2 = color_code[opt2]
         for country in list(country_info_dict.keys()):
             to_node = country
             items_list = country_info_dict[country][temp_my_dict[opt2]]
             if to_node not in nodes:
                 nodes.append(to_node)
-                node_colors[to_node] = 'red'
+                node_colors[to_node] = color_1
             for each in items_list:
                 from_node = each
                 if from_node not in nodes:
                     nodes.append(from_node)
-                    node_colors[from_node] = 'blue'
+                    node_colors[from_node] = color_2
                 edge = [from_node, to_node]
                 if edge not in edges:
                     edges.append(edge)
                     
     return nodes, edges, node_colors
+
+import numpy as np
+
+def create_followers_num_for_country(df):
+    temp_df = df[['X (Twitter) Follower #', 'Facebook Follower #', 'Instagram Follower #', 'YouTube Subscriber #', 'TikTok Subscriber #', 'Threads Follower #', 'focus countries']]
+    def check_value(value):
+        return 0 if np.isnan(value) else value
+    temp_dic = {}
+    for twitter_fol, facebook_fol, instagram_fol, youtube_fol, tiktok_fol, threads_fol, country_list in temp_df.values:
+        for country in country_list:
+            if country not in list(temp_dic.keys()):
+                temp_dic[country] = {
+                    'twitter': check_value(twitter_fol),
+                    'facebook': check_value(facebook_fol),
+                    'instagram': check_value(instagram_fol),
+                    'youtube': check_value(youtube_fol),
+                    'tiktok': check_value(tiktok_fol),
+                    'threads': check_value(threads_fol),
+                }
+            else:
+                temp_dic[country] = {
+                    'twitter': temp_dic[country]['twitter'] + check_value(twitter_fol),
+                    'facebook': temp_dic[country]['facebook'] + check_value(facebook_fol),
+                    'instagram': temp_dic[country]['instagram'] + check_value(instagram_fol),
+                    'youtube': temp_dic[country]['youtube'] + check_value(youtube_fol),
+                    'tiktok': temp_dic[country]['tiktok'] + check_value(tiktok_fol),
+                    'threads': temp_dic[country]['threads'] + check_value(threads_fol),
+                }
+    save_file('findings/follower_country.json', temp_dic)
+    return temp_dic
+
+def calculate_accounts_num_in_each_platform_per_country(df):
+    def check_value(value):
+        try:
+            return 0 if np.isnan(value) else 1
+        except:
+            return 1
+
+    temp_df = df[['X (Twitter) handle', 'Facebook page', 'Instragram page', 'Threads account', 'YouTube account', 'TikTok account', 'focus countries']]
+    temp_dic = {}
+    for twitter, facebook, instagram, threads, youtube, tiktok, country_list in temp_df.values:
+        for country in country_list:
+            if country not in list(temp_dic.keys()):
+                temp_dic[country] = {
+                        'twitter': check_value(twitter),
+                        'facebook': check_value(facebook),
+                        'instagram': check_value(instagram),
+                        'youtube': check_value(youtube),
+                        'tiktok': check_value(tiktok),
+                        'threads': check_value(threads),
+                        'total': check_value(twitter) + check_value(facebook) + check_value(instagram) 
+                                + check_value(youtube) + check_value(tiktok) + check_value(threads)
+                    }
+            else:
+                temp_dic[country] = {
+                        'twitter': temp_dic[country]['twitter'] + check_value(twitter),
+                        'facebook': temp_dic[country]['facebook'] + check_value(facebook),
+                        'instagram': temp_dic[country]['instagram'] + check_value(instagram),
+                        'youtube': temp_dic[country]['youtube'] + check_value(youtube),
+                        'tiktok': temp_dic[country]['tiktok'] + check_value(tiktok),
+                        'threads': temp_dic[country]['threads'] + check_value(threads),
+                        'total': temp_dic[country]['total'] + check_value(twitter) + check_value(facebook) + check_value(instagram) 
+                                + check_value(youtube) + check_value(tiktok) + check_value(threads)
+                    }
+    save_file('findings/platform_accounts_per_country.json', temp_dic)        
+    return temp_dic           
