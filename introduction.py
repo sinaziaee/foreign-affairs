@@ -61,28 +61,42 @@ st.write("""All the source codes can be found on [GitHub](https://github.com/sin
 
 
 st.subheader("Repository")
-sample_list = {'assets': 'It contains json files to assign each region to its equivalent countries to represent the data based on various metrics on the world map',
-               'dataset': 'All datasets including the main dataset and new datasets are in this directory',
-               'findings':'Statistics (e.g., name, entity owners, accounts, etc.) obtained from the datasets',
-               'pages':'Implementaion of the charts and graphs in the projects',
-               'data_extraction.ipynb':'Codes to extract additional information about users via social media APIs',
-               'home.py':'',
-               'preprocess.ipynb':'',
-               'graph.html':'',}
-st.write("Sample List:")
-st.write(sample_list)
+repository_list = {'assets': 'It contains json files to assign each region to its equivalent countries to represent the data based on various metrics on the world map.',
+               'dataset': 'All datasets including the main dataset and new datasets are in this directory.',
+               'findings':'Statistics (e.g., name, entity owners, accounts, etc.) obtained from the datasets.',
+               'pages':'Implementaion of the charts and graphs in the projects.',
+               'data_extraction.ipynb':'Codes to extract additional information about users via social media APIs.',
+               'introduction.py':'Description of the proejct (First page).',
+               'preprocess.ipynb':'Codes to preprocess the raw data.'}
+st.write("Description of the repository content:")
+st.write(repository_list)
 
 st.subheader("Setup")
 
 st.write("""
+         
+Below are the steps to set up the Streamlit application using code from the GitHub repository: 
+
+         
+**Clone the Repository:**
+         
 ```
-pip install streamlit
+git clone https://github.com/sinaziaee/foreign-affairs
+
+```
+         
+
+**Install Dependencies:**
+         
+```
+pip install -r requirements.txt
+
 ```
 
-Once installed, you can run this app locally by executing the following command in your terminal:
+
+**Once installed the dependencies, run the app locally by executing the following command in your terminal:**
 ```
-streamlit run app.py
+streamlit run introduction.py
 ```
 
-Replace `app.py` with the name of your Python script.
 """)
