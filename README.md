@@ -1,5 +1,6 @@
 # Hackathon - Foreign Affairs Data Visualization
 
+![Untitled](https://github.com/sinaziaee/foreign-affairs/assets/47991444/9d509efb-45f3-48a7-b6b6-6f326d14bcdc)
 
 ## Introduction
 
