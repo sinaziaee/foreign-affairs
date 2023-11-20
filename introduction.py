@@ -57,11 +57,18 @@ st.markdown("- Jupyter notebook:\n Jupyter Notebook is an open-source tool that 
 # Codes
 st.header("Implementaion Codes")
 
-st.write("""All the source codes can be found on GitHub. This repository consists of all codes associated with this project, such as preprocessing and data extraction codes along with the obtained datasets. For a better understanding of the repository and its content, we explain each file and folder:""")
+st.write("""All the source codes can be found on [GitHub](https://github.com/sinaziaee/foreign-affairs). This repository consists of all codes associated with this project, such as preprocessing and data extraction codes along with the obtained datasets. For a better understanding of the repository and its content, we explain important files and directories:""")
 
 
-st.subheader("Folders & Files")
-sample_list = ["Item 1", "Item 2", "Item 3", "Item 4", "Item 5"]
+st.subheader("Repository")
+sample_list = {'assets': 'It contains json files to assign each region to its equivalent countries to represent the data based on various metrics on the world map',
+               'dataset': 'All datasets including the main dataset and new datasets are in this directory',
+               'findings':'Statistics (e.g., name, entity owners, accounts, etc.) obtained from the datasets',
+               'pages':'Implementaion of the charts and graphs in the projects',
+               'data_extraction.ipynb':'Codes to extract additional information about users via social media APIs',
+               'home.py':'',
+               'preprocess.ipynb':'',
+               'graph.html':'',}
 st.write("Sample List:")
 st.write(sample_list)
 
