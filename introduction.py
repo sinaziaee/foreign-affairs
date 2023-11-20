@@ -38,7 +38,7 @@ st.subheader("1. Data Preprocessing:")
 st.write("""
 Before visualizing the "Foreign Affairs" dataset, our initial step was to preprocess and refine the data to enhance data quality. First, We dropped the "Name (Chinese)" and "Entity owner (Chinese)" columns, as redundant information, since we have corresponding English names and Entity owners. Additionally, due to the varied nature of the "Region of Focus" column, containing cities, countries, and continents, we assigned each region to its corresponding countries in order to facilitate representing the data on the world map.
          
-         \n Furthermore, to have up-to-date information about the number of followers of each name on the dataset and have more accurate data, we leveraged social media APIs to extract the most recent follower counts. As a result, the number of followers has been updated to reflect the most recent data. The data was collected on November 16, 2023.
+         \n Furthermore, to have up-to-date information about the number of followers of each name on the dataset and have more accurate data, we leveraged social media APIs to extract the most recent follower counts in platforms that widely used by the names in the dataset. As a result, the number of followers has been updated to reflect the most recent data. The data was collected on November 18, 2023.
 
 """)
 
