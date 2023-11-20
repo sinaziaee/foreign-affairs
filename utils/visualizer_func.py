@@ -13,6 +13,10 @@ import folium
 from streamlit_folium import folium_static
 import streamlit as st
 import plotly.graph_objects as go
+import streamlit as st
+import pandas as pd
+import plotly.express as px
+from utils import util_functions
 
 
 def visualize_dictionary_on_map(country_data):
@@ -83,19 +87,6 @@ def visualize_graph(nodes, edges, node_colors):
 
     nt.show('graph.html')
     st.components.v1.html(open('graph.html', 'r').read(), height=1000)
-
-import dash
-import dash_core_components as dcc
-import dash_html_components as html
-import dash_cytoscape as cyto
-import networkx as nx
-import streamlit as st
-
-
-import streamlit as st
-import pandas as pd
-import plotly.express as px
-from utils import util_functions
 
 def plot_follower_bar(x, y, title='Title', x_name='X', y_name='Y'):
     st.title(title)
