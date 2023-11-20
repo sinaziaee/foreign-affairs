@@ -102,12 +102,16 @@ def create_country_to_name_owner_parent_data(df):
                 country_to_accounts_dict[country] = {'name': [name], 'owner': [owner], 'parent': [parent]}
             else:
                 temp_dic = country_to_accounts_dict[country]
-                if name not in list(temp_dic['name']):
-                    temp_dic['name'].append(name)
-                if owner not in list(temp_dic['owner']):
-                    temp_dic['owner'].append(owner)
-                if parent not in list(temp_dic['parent']): 
-                    temp_dic['parent'].append(parent)
+                # if name not in list(temp_dic['name']):
+                #     temp_dic['name'].append(name)
+                # if owner not in list(temp_dic['owner']):
+                #     temp_dic['owner'].append(owner)
+                # if parent not in list(temp_dic['parent']): 
+                #     temp_dic['parent'].append(parent)
+                temp_dic['name'].append(name)
+                temp_dic['owner'].append(owner)
+                temp_dic['parent'].append(parent)
+                
                 country_to_accounts_dict[country] = temp_dic
 
     with open('findings/country_corps.json', 'w') as file:

@@ -50,7 +50,7 @@ with bottom_right_column:
     st.header("Twitter Verified Accounts")
     temp_series = df['is_blue_verified'].value_counts(dropna=False)
     temp_df = pd.DataFrame({'Name': ["Is Verified", "Is Not Verified", "N/A"], 'Value': list(temp_series.values)})
-    visualizer_func.create_pie_chart(temp_df, 'Value', 'Name', "", text='Verified Accounts are the ones that are Blue Verified')
+    visualizer_func.create_donut_chart(temp_df, 'Value', 'Name', "", text='Verified Accounts are the ones that are Blue Verified')
 
 
 
@@ -83,7 +83,7 @@ with bottom_right_column:
 #                             max_bound=3, value=util_functions.generate_visual_numbers(corp_dict['tiktok_fol']))
         
 import pandas as pd
-import plotly.express as px
+import plotly.express as px 
 
 # with top_right_column:
 #     st.header("The ratio of Followers per Accounts in each platform")

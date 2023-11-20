@@ -59,22 +59,16 @@ def visualize_dictionary_on_map(country_data):
     # Display the map in Streamlit
     folium_static(m)
     
-def display_country_info(selected_country_name, country_info_dict):
+def display_country_info(selected_country_name, country_info_dict, df=None):
     # Function to display country information in a table
     st.write("Selected Country Information:")
     
     if selected_country_name in country_info_dict:
         country_info = country_info_dict[selected_country_name]
         
-        # Ensure that all lists have the same length
-        min_length = min(map(len, country_info.values()))
-        country_info = {key: value[:min_length] for key, value in country_info.items()}
-        
-        # Create a DataFrame from the country_info dictionary
-        country_df = pd.DataFrame(country_info)
-        
-        # Display the scrollable table
-        st.dataframe(country_df.style.set_properties(**{'max-height': '400px', 'overflow-y': 'auto'}))
+        temp_df = pd.DataFrame({'name': country_info['name'], 'owner': country_info['owner'], 'parent': country_info['parent']})
+        temp_df
+        st.dataframe(temp_df)
     else:
         st.write(f"No information available for {selected_country_name}")
 
@@ -94,7 +88,7 @@ def visualize_graph(nodes, edges, node_colors):
 
     # Display the graph using Streamlit
     nt.show('graph.html')
-    st.components.v1.html(open('graph.html', 'r').read(), height=600)
+    st.components.v1.html(open('graph.html', 'r').read(), height=1000, use_container_width=True)
 
 
 import streamlit as st
@@ -108,7 +102,7 @@ def plot_follower_bar(x, y, title='Title', x_name='X', y_name='Y'):
     df = pd.DataFrame(data)
     
     fig = px.bar(df, x=x_name, y=y_name)
-    st.plotly_chart(fig)
+    st.plotly_chart(fig, use_container_width=True)
 
 
 def plot_followers(df):
@@ -124,7 +118,7 @@ def plot_followers(df):
     # Filter and process data for selected columns
     filtered_data = df[df_columns]
     filtered_data = filtered_data.dropna()
-    filtered_data.sort_values(by=df_columns, ascending=False, inplace=True)
+    filtered_data = filtered_data.sort_values(by=df_columns, ascending=False)
 
     # Generate and display the bar plot for each selected column
     for column in df_columns:
@@ -174,7 +168,7 @@ def plot_language_focus_bar(x, y, title='Title', x_name='X', y_name='Y'):
     
     fig = px.bar(df, x=x_name, y=y_name)
     fig.update_layout(height=620)
-    st.plotly_chart(fig)
+    st.plotly_chart(fig, use_container_width=True)
     
 def visualize_top_n_rows(df, selected_y_column, top_n):
     # Convert 'created_at' to datetime format
@@ -188,7 +182,7 @@ def visualize_top_n_rows(df, selected_y_column, top_n):
     fig = px.bar(top_n_df, x='created_at', y=selected_y_column, labels={'created_at': 'Year of Creation', selected_y_column: 'Y-axis Column'}, text=top_n_df.index)
     fig.update_traces(textposition='outside', textfont_size=12, textangle=-90)
 
-    st.plotly_chart(fig)
+    st.plotly_chart(fig, use_container_width=True, height=800)
     
     
 def create_pie_chart(data, column_value_name, column_title_name, title='Pie Chart', text=None):
@@ -203,7 +197,7 @@ def create_pie_chart(data, column_value_name, column_title_name, title='Pie Char
     fig = px.pie(df, names=column_title_name, values=column_value_name, title='')
     
     # Display the chart using st.plotly_chart
-    st.plotly_chart(fig)
+    st.plotly_chart(fig, use_container_width=True)
     
 def create_donut_chart(data, column_value_name, column_title_name, title='Donut Chart', text=None):
     st.set_option('deprecation.showPyplotGlobalUse', False)
@@ -216,13 +210,13 @@ def create_donut_chart(data, column_value_name, column_title_name, title='Donut 
     df = pd.DataFrame(data, columns=[column_value_name, column_title_name])
     
     # Plot a donut chart
-    plt.figure(figsize=(8, 8))
+    plt.figure(figsize=(4, 4))
     plt.pie(df[column_value_name], labels=df[column_title_name], autopct='%1.1f%%', startangle=90,
             wedgeprops=dict(width=0.3, edgecolor='w'))  # Set the width and edge color to create a donut
     plt.axis('equal')  # Equal aspect ratio ensures that donut is drawn as a circle.
     
     # Display the chart using st.pyplot
-    st.pyplot()
+    st.pyplot(use_container_width=True)
 
 def plot_metric(
     label,
@@ -268,13 +262,13 @@ def plot_gauge(
                     "y":[0,1]
             },
             number={"suffix": indicator_suffix,
-                    "font.size": 26
+                    "font.size": 22
             },
             gauge={"axis":{"range":[0, max_bound], "tickwidth": 1},
                     "bar": {"color": indicator_color},
             },
             title={"text": indicator_title,
-                    "font": {"size": 22},
+                    "font": {"size": 18},
             },
         )
     )
@@ -284,7 +278,7 @@ def plot_gauge(
         y=0.2,
         text=f'{value} Followers',
         showarrow=False,
-        font=dict(size=20),
+        font=dict(size=16),
     )
     
     fig.update_layout()
