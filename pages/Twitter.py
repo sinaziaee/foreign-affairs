@@ -77,3 +77,33 @@ with bottom_right_column:
     temp_series = df['is_blue_verified'].value_counts(dropna=False)
     temp_df = pd.DataFrame({'Name': ["Is Verified", "Is Not Verified", "N/A"], 'Value': list(temp_series.values)})
     visualizer_func.create_donut_chart(temp_df, 'Value', 'Name', "", text='Verified Accounts are the ones that are Blue Verified')
+    
+import numpy as np
+import matplotlib.pyplot as plt
+    
+
+st.header("Number of Twitter Accounts Created over the years")    
+
+temp_series = df.sort_values('created_at')['created_at'].unique()
+num_year_dict = {}
+for time_stamp in temp_series:
+    year = time_stamp.year
+    if np.isnan(year):
+        continue
+    if year not in list(num_year_dict.keys()):
+        num_year_dict[year] = 1
+    else:
+        num_year_dict[year] += 1
+
+years = list(num_year_dict.keys())
+values = list(num_year_dict.values())
+
+plt.figure(figsize=(10, 6))
+plt.plot(years, values, marker='o', linestyle='-', color='b')
+# plt.title('Line Chart of Data Over Years')
+plt.xlabel('Year')
+plt.ylabel('Number of Accounts')
+plt.grid(True)
+
+# Display the chart using Streamlit
+st.pyplot(plt)
