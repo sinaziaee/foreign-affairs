@@ -140,30 +140,29 @@ def plot_filtered_language_bar_based_on_followers_of_each_platform(x, y, title='
     df = pd.DataFrame(data)
     
     fig = px.bar(df, x=x_name, y=y_name)
-    st.plotly_chart(fig)
+    st.plotly_chart(fig, use_container_width=True)
     
 def plot_filtered_language_follower_bar(df):
     # Filter bar
-    all_languages_option = 'All Languages'
-    selected_language = st.selectbox('Select a Language', [all_languages_option] + list(df['Language'].unique()))
+    selected_language = st.selectbox('Select a Language', list(df['Language'].unique()))
 
     # Column selector
     selected_column = st.selectbox('Select a Column', ['X (Twitter) Follower #', 'Facebook Follower #', 'YouTube Subscriber #',
                             'Instagram Follower #', 'Threads Follower #', 'TikTok Subscriber #'])
 
     # Update DataFrame based on selected language
-    if selected_language == all_languages_option:
-        filtered_df = df
-    else:
-        filtered_df = df[df['Language'] == selected_language]
+    filtered_df = df[df['Language'] == selected_language]
 
     # Filtered data series
-    selected_column_series = filtered_df[selected_column]
-    selected_column_series = selected_column_series.dropna()
-    selected_column_series.sort_values(ascending=False, inplace=True)
+    filtered_df = df[df['Language'] == selected_language]
+    filtered_df = filtered_df[filtered_df[selected_column].notna()]
+    filtered_df = filtered_df.set_index('Account Name')
+    filtered_df = filtered_df.sort_values(selected_column, ascending=False)
     
-    plot_filtered_language_bar_based_on_followers_of_each_platform(selected_column_series.index, selected_column_series.values, 
-            title='Accounts Followers Based on Language', x_name='Accounts', y_name='Number of Followers')
+    plot_filtered_language_bar_based_on_followers_of_each_platform(filtered_df.index, filtered_df[selected_column], 
+            title='', x_name='Accounts', y_name='Number of Followers')
+
+    # return selected_column_series
     
 def plot_language_focus_bar(x, y, title='Title', x_name='X', y_name='Y'):
     # st.title(title)
