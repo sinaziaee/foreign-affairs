@@ -73,22 +73,23 @@ def display_country_info(selected_country_name, country_info_dict, df=None):
         st.write(f"No information available for {selected_country_name}")
 
 def visualize_graph(nodes, edges, node_colors):
-    # Create a Network instance with directed graph
     nt = Network(notebook=True, height='500px', width='100%', directed=True)
-
-    # Add nodes to the graph with assigned colors
     for node in nodes:
-        color = node_colors.get(node, 'lightblue')  # Default color if not found in mapping
+        color = node_colors.get(node, 'lightblue') 
         nt.add_node(node, color=color)
 
-    # Add edges to the graph
     for edge in edges:
         nt.add_edge(edge[0], edge[1])
-        # nt.add_edge(edge[1], edge[0])
 
-    # Display the graph using Streamlit
     nt.show('graph.html')
-    st.components.v1.html(open('graph.html', 'r').read(), height=1000, use_container_width=True)
+    st.components.v1.html(open('graph.html', 'r').read(), height=1000)
+
+import dash
+import dash_core_components as dcc
+import dash_html_components as html
+import dash_cytoscape as cyto
+import networkx as nx
+import streamlit as st
 
 
 import streamlit as st

@@ -16,14 +16,14 @@ def find_exact_focus_groups(df, recognized_countries, equivalent_countries_dict)
         for country_name in temp_country_list:
             if country_name not in found_country_name_list:
                 found_country_name_list.append(country_name)
-    df['focus group'] = all_list
+    df['focus countries'] = all_list
     return df, found_country_name_list  
 
 def find_country_focus_count_dictionary(df, recognized_countries, equivalent_countries_dict):
     df, found_country_name_list = find_exact_focus_groups(df, recognized_countries, equivalent_countries_dict)
     temp_dic = dict.fromkeys(found_country_name_list, 0)
     for idx in range(len(df)):
-        country_list = df['focus group'][idx]
+        country_list = df['focus countries'][idx]
         for country in country_list:
             temp_dic[country] += 1
     return temp_dic, df
@@ -96,7 +96,7 @@ def preprocess_twitter_data(twi_df):
 
 def create_country_to_name_owner_parent_data(df):
     country_to_accounts_dict = {}
-    for country_list, name, owner, parent in df[['focus group', 'Name (English)', 'Entity owner (English)', 'Parent entity (English)']].values:
+    for country_list, name, owner, parent in df[['focus countries', 'Name (English)', 'Entity owner (English)', 'Parent entity (English)']].values:
         for country in country_list:
             if country not in list(country_to_accounts_dict.keys()):
                 country_to_accounts_dict[country] = {'name': [name], 'owner': [owner], 'parent': [parent]}
@@ -191,3 +191,76 @@ def generate_visual_numbers(num):
         mil = num/1000000
         return f'{mil:.2f} M'
 
+
+def check_selected(selected_options, my_dict):
+    opt1 = selected_options[0]
+    opt2 = selected_options[1]
+    
+    if my_dict[opt1] == 'focus':
+        return opt1, opt2
+    else:
+        return opt2, opt1
+    
+def find_priority(selected_options, my_dict):
+    opt1 = selected_options[0]
+    opt2 = selected_options[1]
+    if my_dict[opt1] == 'name':
+        return opt2, opt1
+    elif my_dict[opt2] == 'name':
+        return opt1, opt2
+    elif my_dict[opt1] == 'owner':
+        return opt2, opt1
+    elif my_dict[opt2] == 'owner':
+        return opt1, opt2
+    else:
+        return opt1, opt2
+    
+
+def generate_graph(selected_options, df):
+    with open('findings/country_corps.json', 'r') as file:
+        country_info_dict = json.load(file)
+    temp_my_dict = {
+        'Name (English)': 'name',
+        'Entity owner (English)': 'owner',
+        'Parent entity (English)': 'parent',
+        'focus countries': 'focus',
+    }
+
+    nodes = []
+    edges = []
+    node_colors = {}
+    if 'focus countries' not in selected_options:
+        to_node_name, from_node_name = find_priority(selected_options, temp_my_dict)
+        temp_df = df[['Name (English)', 'Entity owner (English)', 'Parent entity (English)']]
+        to_nodes_list = list(df[to_node_name].values)
+        for to_node in to_nodes_list:
+            from_node_list = list(temp_df[temp_df[to_node_name] == to_node][from_node_name].values)
+            for from_node in from_node_list:    
+                if to_node not in nodes:
+                    nodes.append(to_node)
+                    node_colors[to_node] = 'red'
+                if from_node not in nodes:
+                    nodes.append(from_node)
+                    node_colors[from_node] = 'blue'
+                edge = [from_node, to_node]
+                if edge not in edges:
+                    edges.append(edge)
+
+    else:
+        opt1, opt2 = check_selected(selected_options, temp_my_dict)
+        for country in list(country_info_dict.keys()):
+            to_node = country
+            items_list = country_info_dict[country][temp_my_dict[opt2]]
+            if to_node not in nodes:
+                nodes.append(to_node)
+                node_colors[to_node] = 'red'
+            for each in items_list:
+                from_node = each
+                if from_node not in nodes:
+                    nodes.append(from_node)
+                    node_colors[from_node] = 'blue'
+                edge = [from_node, to_node]
+                if edge not in edges:
+                    edges.append(edge)
+                    
+    return nodes, edges, node_colors
