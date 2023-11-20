@@ -1,7 +1,7 @@
 # Hackathon - Foreign Affairs Data Visualization
 
 ![Untitled](https://github.com/sinaziaee/foreign-affairs/assets/47991444/9d509efb-45f3-48a7-b6b6-6f326d14bcdc)
-
+![Youtube](https://www.youtube.com/watch?v=a0qAAQyfE0o)
 ## Introduction
 
 In the CANIS Data Visualization and Foreign Interference challenge, we team are given a  [dataset](https://kaggle.com/datasets/26d46af7be53af51e042cf9abc377731d0d53faec0a4cf713ffbf5dca3c364dc)  and a task to visualize the dataset, and our goal, as a participant, is to decode the dataset, uncover patterns, and ultimately transform raw data into meaningful insights for a broader audience that might not be immediately apparent.
