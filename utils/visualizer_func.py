@@ -125,7 +125,7 @@ def plot_filtered_language_bar_based_on_followers_of_each_platform(x, y, title='
     data = {x_name: x, y_name: y}
     df = pd.DataFrame(data)
     
-    fig = px.bar(df, x=x_name, y=y_name)
+    fig = px.bar(df, x=x_name, y=y_name, color_discrete_sequence=['#04c0b1'])
     st.plotly_chart(fig, use_container_width=True)
     
 def plot_filtered_language_follower_bar(df):
